@@ -1,0 +1,108 @@
+
+1) What is selenium (notebook)
+
+2) History of selenium projects (notebok)
+
+3) Selenium Tools' Suite : (notebook)
+
+ - Selenium IDE
+ - Selenium RC
+ - Selenium WebDriver
+ - Selenium Grid
+
+4) Selenium application environemts :
+
+ - CUI based - Command User Interface ---> No supprt
+ - Window Based application - Tier1 (notepad), Tier2 (Airpline application) ----> No support
+ - Web Based Application - Selenium support this
+ - Mobile Based application "
+	3 types :
+	 -Native application
+	 -Web Applications
+	 -Hybrid application
+
+Selenium support only mobile applications which have web forms (Web applications).
+ 
+5) Selenium Programming environemts :
+
+Suporting programming languages :
+ - Java
+ - C#
+ - Ruby
+ - Python
+ - Pearl
+ - PHP
+
+UFT supports only VB script.
+
+Selenium IDE - No programming can be done.
+
+6) Selenium Browser Environments :
+
+Selenium IDE - supports only Firefox.
+Selenium Webdriver - supports :
+Google chrome
+Mozilla Firefox
+Microsoft Internet Explorer
+Safari
+Opera
+
+7) Selenium License :
+
+All selenium tools released under Apache 2 license.
+Anyone can download and use all selenium tools with free of cost.
+
+Anyonce can download the source code of selenium and modify it and distribute it.
+
+8) Testing Frameworks and other tools used in selenium :
+
+- JUnit Framework
+- TestNG   - stands for next generation framework.
+
+Both are open source.
+
+Firebug - FF
+Firepath - FF
+
+Browsers drivers for Cross Browser Testing.
+
+Add selenium standalone .jar
+
+9) Selenium Environmetal Setup :
+
+Download Eclipse (or netbeans or IntelliJ)
+Selenium Webdriver - selenium jar
+JavA as programming language
+TESTNG framework for Test Runner.
+Drivers for diff diff browsers.
+Firebug and Firepath 
+
+
+10) Advantages of selenium :
+
+- Open Source
+- Supports various browsers
+- supports various programming languages
+- supports parallel test execution
+- Uses less hardware resources
+
+11) Disadvantages of selenium :
+
+- Supports web based application only.
+- No object repository
+- Difficult set up environment.
+- Difficult to use.
+- no build in reporting facility.
+
+12) Difference between Selenium and QTP/UFT :
+
+Selenium                                 QTP 
+open source				 License required
+support various env.			 Supports only MS Windows 
+Support many prog languages		 Supports only VB scripting
+No object Repo 				 Local and Shared Object Repo is there
+No built in - reporing feature    	 Built In reporting feature
+Difficult to setup			 No difficulty in setup
+No reliable support			 Support from HP
+Support web applications only		 Support Web and Desktop applications
+
