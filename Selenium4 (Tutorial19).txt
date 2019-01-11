@@ -1,0 +1,125 @@
+
+Browser Driven Objects :
+
+Link 
+Button
+Image
+Image button
+Image 
+Image link
+Edit box
+text area
+Checkbox
+Radio button
+Drop-down
+List Box
+Webtable 
+Html Table
+___________________________________
+
+Methods on browsers :
+
+get()
+gettitle()
+getPageSource()
+getCurrentURL()
+getWindowHandle()
+close()
+quit()
+___________________________________
+
+Browser navigation methods ;
+
+navigate().to()
+navigate().back()
+navigate().forward()
+navigate.refresh()
+
+___________________________________
+
+Methods on Elements :
+
+findElement()
+findElements()
+sendkeys()
+clear()
+click()
+isDisplayed()
+isSelected()
+isEnabled()
+
+___________________________________
+
+Other methods :
+manage.window.maximize()
+.explicitlywait()
+
+___________________________________
+
+Java fundamentals used in Selenium :
+
+Comments
+Data types
+modifiers
+variables
+Operators
+Conditional statements
+Loop statements
+String Handling
+Arrays in java
+Build in methods
+user defined methods
+Input and Output operations
+File Handling
+Error Handling
+Exception handling
+JAVA OOPS
+ - Inheritance
+ - Abstraction
+ - Encapsulation
+ - Polymorphism
+___________________________________
+
+Handling Elements in Selenium :
+
+
+- Handling browser  
+driver.getTitle 
+driver.getCurrentURL() 
+driver.getPageSource()
+driver.getWindowHandle()
+driver.navigate().to()
+driver.navigate().back()
+driver.navigate().forward()
+driver.manage.window.maximize()
+
+-Handling Edit box 
+findElement()
+sendKeys()
+clear()
+click()
+getText()
+isDisplayed()
+isEnabled()
+
+-Handle TextArea
+Capture Text area
+
+-Handle Window Popup 
+driver.switchTo.alert()
+Alert alert = driver.switchTo.alert()
+String errorMessage = alert.getText();
+alert.accept()  // To click ok button
+alert.dismiss()
+
+-Handle button
+click
+check the enabled status
+check the displayed status
+return the button text
+getAttribute
+
+___________________________________
+
+
+
