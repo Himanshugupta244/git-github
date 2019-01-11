@@ -1,0 +1,31 @@
+
+Actions we can do on a page/button/image :
+
+getPage Title
+getPage Source
+getPage URL
+To find element ----- findelement(),findelements()
+clear a box ------ clear()
+enter something ---- sendkeys()
+To click   ---- click()
+Checkbox
+Select
+Unselect
+iFrame
+WindowHandle
+PopUp Handle
+Handle Alerts
+To get the text ----- getText()
+WebTable
+
+8 locators are there to locate the element :
+
+1) id -------
+2) name  ------
+3) className     -------
+4) tagName      --------
+5) link text     --------
+6) partial link text
+7) xpath
+8) Css selector
+
