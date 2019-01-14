@@ -1,0 +1,141 @@
+
+Return/Capture value from input box :
+
+driver.findElement(By.id("Email")).sendKeys("ABC");
+driver.findElement(By.id("Email")).getAttribute("value");
+
+___________________________________________________________
+
+3 types of images are there :
+
+Handle Image :
+
+1) Simple Image
+2) Image Link
+3) Image button
+
+driver.findElement(by.id("hplogo")).isDisplayed();      // Google Search title Image
+driver.findElement(by.id("hplogo")).getAttribute("title");
+
+For ImageButton and Image Link :
+
+FindElement and click it.
+
+___________________________________________________________
+
+Handle Link :
+
+> Click
+> Check the link existence
+> Check the Enabled Sttaus
+> Return Link name
+
+
+click :
+driver.findElement(By.id("Email")).click();
+
+Link existence :
+driver.findElement(By.id("Email")).isDisplayed();   // this will return a boolean value
+
+Link enable status :
+driver.findElement(By.id("Email")).isEnabled();     // this will return a boolean value
+
+
+
+___________________________________________________________
+
+Handle Radio button :
+
+> Select radio button
+> Check enable status
+> Check displayed status
+> Check selected status
+
+
+select radio button :
+click();                //Example Site : https://www.keynotesupport.com/websites/contact-form-example-radio-buttons.shtml
+
+Check enable status :
+
+
+Check displayed status :
+
+
+Check selected status :
+isSelected();
+
+___________________________________________________________
+
+Handle Drop-down :
+
+> Select an item
+> Check displayed status
+> Check enabled status
+> Items Count
+
+
+Select an item :
+1) Select by index
+2) Select by value
+3) Select by VisibleText
+
+Select dropdown = new Select(driver.findElement(By.id("Company_Size__c")));     // Example : http://info.saucelabs.com/FY17-ADV-SeleniumeBookAdwords-20170502_LP.html?gclid=EAIaIQobChMIrcmqz4Ht3wIVjo3ICh2r5AxgEAAYASAAEgI2uPD_BwE
+dropdown.selectByIndex(1);
+dropdown.selectByValue("11-50");
+Select dropdown2 = new Select (driver.findElement(By.id("seleniumTipsRequest")));
+dropdown2.selectByVisibleText("No thanks");
+
+
+Items Count :
+Select dropdown = new Select(driver.findElement(By.id("Company_Size__c")));     
+dropdown.getOptions().size();
+
+Check displayed status :
+Same as above
+
+Check enabled status
+Same as above
+
+___________________________________________________________
+
+Handle checkbox :
+
+> Select
+> Unslect
+> Check displayed status
+> Check Enabled status
+> Check selected status
+
+
+Select checkbox :
+click();
+                          // Example : http://www.echoecho.com/htmlforms09.htm
+Unselect checkbox :
+click();
+
+Check displayed status :
+isDisplayed();
+
+Check Enabled status :
+isEnabled();
+
+Check Selected status :
+isSelect();
+
+___________________________________________________________
+
+Handle WebTable / HTML Table : (not yet completed) 
+
+> Get cell value
+> Get row Count
+> Cells count
+
+Get Cell Value :              //Example : http://demo.automationtesting.in/WebTable.html
+We can directly use Xpath.
+
+___________________________________________________________
+
+Handle Inline Elemets :
+click();                     // Example : google -> Google apps link shows inline elements
+
+___________________________________________________________
