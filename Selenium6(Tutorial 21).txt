@@ -1,0 +1,130 @@
+
+Handle iframes :
+
+iFrames can be handled in 3 ways :
+
+- Using Frame index  (index start from 0 to n-1)
+
+Syntax :
+driver.switchTo().frame(int index);
+
+
+Example :
+driver.switchTo().frame(2);
+
+driver.get("https://seleniumhq.github.io/selenium/docs/api/java/index.html");
+driver.switchTo().frame(2);
+driver.findElement(By.xpath(".//a[contains(text(),'com.thoughtworks.selenium')]")).click();
+
+- Using frame Name :
+
+Syntax :
+driver.switchTo.frame(String framename);
+
+Example :
+driver.get("https://seleniumhq.github.io/selenium/docs/api/java/index.html");
+driver.switchTo().frame("packageFrame");
+driver.findElement(By.xpath(".//a[contains(text(),'AbstractAnnotations')]")).click();
+
+- Using frame as WebElement 
+
+Syntax :
+driver.switchTo().frame(WebElement framePath);
+
+Example :
+driver.get("https://seleniumhq.github.io/selenium/docs/api/java/index.html");
+driver.switchTo().frame(driver.findElement(By.xpath(".//frame[@name='packageFrame']")));
+wait(1000);
+driver.findElement(By.xpath(".//a[contains(text(),'AbstractHttpCommandCodec')]")).click();
+
+How to get Frame Count :
+driver.get("https://seleniumhq.github.io/selenium/docs/api/java/index.html");
+System.out.println("Frame size is :: " + driver.findElements(By.tagName("frame")).size());
+
+_____________________________________________________________________________________________________________
+
+Switch between frames and Window :
+
+
+
+Switch from frame to Top-Window :
+
+Syntax :
+driver.switchTo().defaultContent();
+
+Example :
+>First launch the page
+> Switch to 3rd frame
+> operate the element
+> Back to top window
+> Switch to 1st element
+> Operate the element
+
+
+driver.get("https://seleniumhq.github.io/selenium/docs/api/java/index.html");
+driver.switchTo().frame(2);
+driver.findElement(By.xpath(".//a[contains(text(),'com.thoughtworks.selenium')]")).click();
+driver.switchTo().defaultContent();
+driver.switchTo().frame(1);
+driver.findElement(By.xpath(".//a[contains(text(),'AbstractHttpCommandCodec')]")).click();
+
+
+
+Switch from one iframe to another :
+
+driver.get("http://demo.automationtesting.in/Frames.html");
+wait(2000);
+System.out.println(driver.findElements(By.tagName("iframe")).size());
+wait(3000);
+System.out.println("clicking");
+driver.findElement(By.xpath(".//a[contains(text(),'Iframe with in an Iframe')]")).click();
+wait(2000);
+driver.switchTo().frame(driver.findElement(By.xpath(".//iframe[@src='MultipleFrames.html']")));
+driver.switchTo().frame(driver.findElement(By.xpath(".//iframe[@src='SingleFrame.html']")));
+driver.findElement(By.xpath(".//input[@type='text']")).sendKeys("myNameIsHimanshu");
+
+
+
+Switch from iFrame to window again and perform action on window elements  :
+
+
+driver.get("http://demo.automationtesting.in/Frames.html");
+wait(2000);
+System.out.println(driver.findElements(By.tagName("iframe")).size());
+wait(3000);
+System.out.println("clicking");
+driver.findElement(By.xpath(".//a[contains(text(),'Iframe with in an Iframe')]")).click();
+wait(2000);
+driver.switchTo().frame(driver.findElement(By.xpath(".//iframe[@src='MultipleFrames.html']")));
+driver.switchTo().frame(driver.findElement(By.xpath(".//iframe[@src='SingleFrame.html']")));
+driver.findElement(By.xpath(".//input[@type='text']")).sendKeys("myNameIsHimanshu");
+driver.switchTo().defaultContent();
+driver.findElement(By.xpath(".//a[contains(text(),'Single Iframe ')]")).click();
+
+_____________________________________________________________________________________________________________
+
+
+Handle Mouse Hover :
+
+driver.get("https://www.shiksha.com/");
+WebElement toElement = driver.findElement(By.xpath(".//a[@lang='Engineering']"));
+Actions myAction = new Actions(driver);
+myAction.moveToElement(toElement).build().perform();
+wait(3000);
+driver.findElement(By.xpath(".//a[contains(text(),'B.E/B.Tech')]")).click();
+
+
+2nd Example :
+driver.get("https://www.carmax.com/");
+WebElement toElement = driver.findElement(By.xpath(".//a[contains(text(),'Cars for Sale')]"));
+Actions myAction = new Actions(driver);
+myAction.moveToElement(toElement).build().perform();
+wait(3000);
+driver.findElement(By.xpath(".//a[@class='nav--item--subnav--item']")).click();
+
+_____________________________________________________________________________________________________________
+
+
+Handle Multiple Browsers : (not yet completed)
+
+_____________________________________________________________________________________________________________
