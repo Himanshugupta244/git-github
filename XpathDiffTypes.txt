@@ -1,0 +1,98 @@
+package testProject;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class XpathDiffTypes {
+
+	public static void main(String[] args) {
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\hgupta\\Downloads\\chromedriver_win32\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		try  {
+			driver.manage().window().maximize();
+			// Simple Xpath :
+//			driver.get("https://www.google.com/");
+//			TestClass.wait(1000);
+//			driver.findElement(By.xpath(".//input[@title='Search']")).sendKeys("Search");
+			// Using * 
+//			driver.get("https://www.google.com/");
+//			TestClass.wait(1000);
+//			driver.findElement(By.xpath(".//input[@title='Search']")).sendKeys("Search");
+			// Using child 
+//			driver.get("https://www.google.com/");
+//			TestClass.wait(1000);
+//			driver.findElement(By.xpath(".//div[@id='searchform']//input[@title='Search']")).sendKeys("Search");
+			// Using 2 attributes with 'AND'
+//			driver.get("https://www.google.com/");
+//			TestClass.wait(1000);
+//			driver.findElement(By.xpath(".//input[@type='text' and @title='Search']")).sendKeys("Search");
+			// Using 2 attributes with 'OR'
+//			driver.get("https://www.google.com/");
+//			TestClass.wait(1000);
+//			driver.findElement(By.xpath(".//input[@type='text' or @title='Search']")).sendKeys("Search");
+			// Using some part of an attribute with contains
+//			driver.get("https://www.google.com/");
+//			TestClass.wait(1000);
+//			driver.findElement(By.xpath(".//input[contains(@title,'Sear')]")).sendKeys("Search");
+			// Using Partial Link Text 
+//			driver.get("https://www.google.com/");
+//			TestClass.wait(1000);
+//			driver.findElement(By.xpath(".//a[contains(text(),'Gmai')]")).click();
+			// Using attribute value with 'starts with'
+//			driver.get("https://www.google.com/");
+//			TestClass.wait(1000);
+//			driver.findElement(By.xpath(".//input[starts-with(@title,'Sear')]")).sendKeys("Search");
+			// Using Complete Link Text 
+//			driver.get("https://www.google.com/");
+//			TestClass.wait(1000);
+//			driver.findElement(By.xpath(".//a[text()='Gmail']")).click();
+			// Using index of an element 
+//			driver.get("https://www.google.com/");
+//			TestClass.wait(1000);
+//			driver.findElement(By.xpath(".//input[starts-with(@title,'Sear')]")).sendKeys("Search");
+//			driver.findElement(By.xpath("(.//input[@type='submit'])[3]")).click();
+			// Using preceding 
+//			driver.get("https://www.google.com/");
+//			TestClass.wait(1000);
+//			driver.findElement(By.xpath(".//input[@value='Google Search']//preceding::input[@type='text']")).sendKeys("abc");
+			// Using Parent as Ancestor 
+//			driver.get("https://www.google.com/");
+//			TestClass.wait(1000);
+//			System.out.println(driver.findElement(By.xpath(".//input[@title='Search']/ancestor::div[@jscontroller='iDPoPb']")).getAttribute("class"));
+			// Using Parent 
+//			driver.get("https://www.google.com/");
+//			TestClass.wait(1000);
+//			System.out.println(driver.findElement(By.xpath(".//input[@title='Search']/parent::div[@jscontroller='iDPoPb']")).getAttribute("class"));
+			// Using Parent Child relationship
+//			driver.get("https://www.google.com/");
+//			TestClass.wait(1000);
+//			System.out.println(driver.findElement(By.xpath(".//input[@title='Search']/parent::div[@jscontroller='iDPoPb']//div")).getAttribute("jsname"));
+			// Using Ancestor
+//			driver.get("https://www.google.com/");
+//			TestClass.wait(1000);
+//			System.out.println(driver.findElement(By.xpath(".//input[@title='Search']/ancestor::form[@action='/search']")).getAttribute("id"));
+			// Using Following Sibling
+//			driver.get("https://www.google.com/");
+//			TestClass.wait(1000);
+//			System.out.println(driver.findElement(By.xpath(".//input[@value='Google Search']/following-sibling::input")).getAttribute("value"));
+			// Using preceding sibling
+//			driver.get("https://www.google.com/");
+//			TestClass.wait(1000);
+//			System.out.println(driver.findElement(By.xpath(".//input[contains(@value,'m Feeling Lucky')]/preceding-sibling::input")).getAttribute("value"));
+			// Using Following - sibling (for 3rd sibling)
+//			driver.get("https://www.flipkart.com/");
+//			TestClass.wait(3000);
+//			System.out.println(driver.findElement(By.xpath(".//input[@type='text' and @autocomplete='off']/parent::div/following-sibling::div[3]")).getAttribute("class"));
+			// Using Following 
+//			driver.get("https://www.flipkart.com/");
+//			TestClass.wait(3000);
+//			System.out.println(driver.findElement(By.xpath(".//input[@type='text' and @autocomplete='off']/parent::div/following::input[@type='password']")).getAttribute("autocomplete"));
+		}
+		finally {
+			TestClass.wait(2000);
+//			driver.close();
+		}
+	}
+
+}
