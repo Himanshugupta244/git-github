@@ -1,0 +1,516 @@
+// CodeForQAComplianceCheck :
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class QAComplianceCheckForAll {
+
+	static String urls[] = new String[100];
+	static String status[] = new String[100];
+	static HashMap<String, List<String>> myMap = new HashMap<>();
+	static String username = "hgupta";               
+	static String password = "Summer@2021";       
+	static WebDriver  driver = null;
+	static List<WebElement> completeStoryList = new ArrayList<WebElement>();
+	static List<String> regressionBugs = new ArrayList<String>();;
+	static StringBuilder sb = new StringBuilder();
+	static String messageBody = null;
+	static List<WebElement> allDevTasks = null;
+	static String team1 = "PARIKRAMA";  // "PARIKRAMA"
+	static String team2 = "WARRIOR"; // null  // "WARRIOR"
+
+	public static void main(String[] args) {
+
+		//		For CMD : uncomment below lines
+		//		username = args[0];
+		//		password = args[1];
+		//		if(args.length>2) {team1 = args[2];}
+		//		if(args.length>3) {team2 = args[3];} else team2 = null;
+
+		System.out.println("username is :: " + username + " and password is :: " + password);
+		System.out.println("Setting system properties");
+		String path = System.getProperty("user.dir");
+		System.out.println("System properties are set");
+
+		// Current Dir Path :
+		System.out.println("current directory path is :: " + path);
+
+		// instantiating driver
+		System.out.println("Instatiating Chrome driver");
+		path = path + "\\chromedriver.exe";
+		System.out.println("Path for Chrome Driver is ::" + path);
+		System.setProperty("webdriver.chrome.driver", path);
+
+		// Opening chrome browser
+		System.out.println("Opening Chrome Browser");
+		driver = new ChromeDriver();
+		System.out.println("Browser Opened");
+
+		// Going to open JIRA
+		System.out.println("Going to Open JIRA");
+		driver.get("https://jira.corp.netspend.com/login.jsp"); waitForTime(5000);
+
+		// Sending JIRA credentials
+		System.out.println("// Sending login name");
+		driver.findElement(By.xpath(".//input[@id='login-form-username']")).sendKeys(username); waitForTime(2000);
+
+		System.out.println("// Sending Password");
+		driver.findElement(By.xpath(".//input[@id='login-form-password']")).sendKeys(password);  waitForTime(2000);
+
+		System.out.println("// Clicking Login Btn");
+		driver.findElement(By.xpath(".//input[@id='login-form-submit']")).click();
+		//		driver.manage().window().maximize(); waitForTime(5000);
+
+
+		// Open TEAM's active dashboard
+		int TotalTeams = 0;
+		if(!(team1==null)) {TotalTeams = 1;}
+		if(!(team2==null)) {TotalTeams = 2;} else {TotalTeams = 1;}
+
+		System.out.println("Number of teams for which the report would be generated :: " + TotalTeams);
+
+		for(int Team=1;Team<=TotalTeams;Team++) {
+
+			completeStoryList  = new ArrayList<WebElement>();
+
+			if(TotalTeams==1) {
+				System.out.println("Generating the report for  :: " + team1);
+				driver.get("https://jira.corp.netspend.com/browse/"+ team1 + "-1111"); waitForTime(5000);
+			}
+
+			if(TotalTeams==2) {
+				switch (Team) {
+				case 1:
+					System.out.println("Generating the report for  :: " + team1);
+					driver.get("https://jira.corp.netspend.com/browse/"+ team1 + "-1111"); waitForTime(5000);
+					break;
+				case 2:
+					System.out.println("Generating the report for  :: " + team2 + " and integrating the same with " + team1);
+					driver.get("https://jira.corp.netspend.com/browse/" + team2 + "-1111"); 
+					waitUntillElementVisible(driver, ".//a[@id='key-val']");
+					waitForTime(2000);
+					break;
+				}
+
+			}
+
+			// Getting active dashboard 
+			//			driver.findElement(By.xpath(".//span[contains(text(),'Active sprints')]/parent::a//span[1]")).click(); waitForTime(5000);
+			driver.findElement(By.xpath(".//div[@data-id='sidebar-navigation-panel']//ul[1]//li[2]//span[1]")).click(); waitForTime(6000);
+
+
+			// StoriesHavingTask
+			List<WebElement> StoriesHavingTask   = new ArrayList<WebElement>();
+			if(driver.findElements(By.xpath(".//div[@role='group']//a[@role='button']")).size()>0) {
+				StoriesHavingTask = driver.findElements(By.xpath(".//div[@role='group']//a[@role='button']"));
+				completeStoryList.addAll(StoriesHavingTask);
+				waitForTime(1000);
+			}
+
+			//StoriesDontHaveTask
+			List<WebElement> StoriesDontHaveTask = new ArrayList<WebElement>();
+			if(driver.findElements(By.xpath(".//div[@title='Story']/following::div[1]//a")).size()>0) {
+				StoriesDontHaveTask = driver.findElements(By.xpath(".//div[@title='Story']/following::div[1]//a"));
+				completeStoryList.addAll(StoriesDontHaveTask);
+				waitForTime(1000);
+			}
+
+			//bugsCount
+			List<WebElement> bugsCount  = new ArrayList<WebElement>();
+			if((driver.findElements(By.xpath(".//div[@title='Bug']/following::div[1]//a")).size()>0)) {
+				bugsCount = driver.findElements(By.xpath(".//div[@title='Bug']/following::div[1]//a")); 
+				completeStoryList.addAll(bugsCount);
+				waitForTime(1000);
+			}
+
+			System.out.println("StoriesHavingTask are :: " + StoriesHavingTask.size());
+			System.out.println("StoriesDontHaveTask are :: " + StoriesDontHaveTask.size());
+			System.out.println("Total number of bug(s) are :: " + bugsCount.size());
+			System.out.println("Total stories+bugs are :: " + completeStoryList.size());
+
+
+			// Making all URLs using completeStoryList
+			for(int count=1;count<=completeStoryList.size();count++) {
+				urls[count-1] = completeStoryList.get(count-1).getAttribute("href");
+				System.out.println("Story Number " + count + " is " + urls[count-1]);
+				waitForTime(500);
+			}
+
+
+			// Checking all required features
+			for(int count=1;count<=completeStoryList.size();count++) {
+				System.out.println("Going to fetch the data for Story number :: " + count);
+				int valueOfstatus = 0; 
+				driver.get(urls[count-1]); waitForTime(5000);
+				if(myMap.get(urls[count-1]) == null) {
+					myMap.put(urls[count-1], new ArrayList<String>());
+				}
+
+				waitUntillElementVisible(driver, ".//a[@id='key-val']");
+				waitForTime(2000);
+				System.out.println("");
+				if(driver.findElements(By.xpath(".//strong[contains(text(),'TestCollab Execution Link')]")).size()>0)
+				{
+					System.out.println("1) PASS ---- Test Collab Link Attached for Story :: " + urls[count-1]);
+					status[0] = "PASS";
+					myMap.get(urls[count-1]).add(status[0]);
+				}
+				else 
+				{
+					System.out.println("1) FAIL ############################ Test Collab Link is not attached for Story :: " + urls[count-1]);
+					status[0] = "FAIL";
+					myMap.get(urls[count-1]).add(status[0]);
+				}
+				if(driver.findElements(By.xpath(".//strong[contains(text(),'Cloud Usage Score')]")).size()>0)
+				{
+					System.out.println("2) PASS ---- Cloud Usage Score updated for Story :: " + urls[count-1]);
+					status[1] = "PASS";
+					myMap.get(urls[count-1]).add(status[1]);
+				}
+				else 
+				{
+					System.out.println("2) FAIL ############################ Cloud Usage Score is not updated  for Story :: " + urls[count-1]);
+					status[1] = "FAIL";
+					myMap.get(urls[count-1]).add(status[1]);
+				}
+				if(driver.findElements(By.xpath(".//strong[contains(text(),'Cloud Usage Comment')]")).size()>0)
+				{
+					System.out.println("3) PASS ---- Cloud Usage Comment updated for Story :: " + urls[count-1]);
+					status[2] = "PASS";
+					myMap.get(urls[count-1]).add(status[2]);
+				}
+				else 
+				{
+					System.out.println("3) FAIL ############################ Cloud Usage Comment is not updated  for Story :: " + urls[count-1]);
+					status[2] = "FAIL";
+					myMap.get(urls[count-1]).add(status[2]);
+				}
+				if((driver.findElements(By.xpath(".//div[@class='issuePanelContainer']//p[contains(text(),'close the story')]")).size()>0) || (driver.findElements(By.xpath(".//div[@class='issuePanelContainer']//p[contains(text(),'close this story')]")).size()>0))
+				{
+					System.out.println("4) PASS ---- Testing Completion comment has been added to story :: " + urls[count-1]);
+					status[3] = "PASS";
+					myMap.get(urls[count-1]).add(status[3]);
+				}
+				else
+				{
+					System.out.println("4) FAIL ############################ Testing Completion comment has not been added to story :: " + urls[count-1]);
+					status[3] = "FAIL";
+					myMap.get(urls[count-1]).add(status[3]);
+				}
+
+				int totalTasks = driver.findElements(By.xpath(".//td[@class='stsequence']")).size();
+				int tasksClosed = driver.findElements(By.xpath(".//td//div[@class='subtask-done']")).size();
+
+				if(totalTasks==tasksClosed)
+				{
+					System.out.println("5) PASS ---- all Dev/QA tasks created under this story are closed");
+					status[4] = "PASS";
+					myMap.get(urls[count-1]).add(status[4]);
+				}
+				else
+				{
+					System.out.println("5) FAIL ############################ one/many task(s) under this story is/are not closed");
+					status[4] = "FAIL";
+					myMap.get(urls[count-1]).add(status[4]);
+				}
+
+				driver.get(urls[count-1]);
+				waitUntillElementVisible(driver, ".//a[@id='key-val']");
+				waitForTime(2000);
+				if(driver.findElements(By.xpath(".//a[@class='issue-link'][contains(text(),'Execution')]")).size()>0) {
+					System.out.println("6) PASS ---- TC Exection Task name is correct");
+					status[5] = "PASS";
+					myMap.get(urls[count-1]).add(status[5]);
+					scrollToElement(driver, driver.findElement(By.xpath(".//a[@class='issue-link'][contains(text(),'Execution')]")));
+					waitForTime(1000);
+					driver.findElement(By.xpath(".//a[@class='issue-link'][contains(text(),'Execution')]")).click();
+					waitUntillElementVisible(driver, ".//a[@id='key-val']");
+					waitForTime(2000);
+					if(driver.findElements(By.xpath(".//a[@class='attachment-title'][contains(text(),'')]")).size()>0) {
+						System.out.println("7) PASS ---- Log file is attached in TC execution task of story :: " + urls[count-1]);
+						status[6] = "PASS";
+						myMap.get(urls[count-1]).add(status[6]);
+					}
+					else
+					{
+						System.out.println("7) FAIL ############################ Log file is not attached in TC execution task of story :: " + urls[count-1]);
+						status[6] = "FAIL";
+						myMap.get(urls[count-1]).add(status[6]);
+					}
+				}
+				else {
+					System.out.println("6) FAIL ############################ TC Exection Task name is not correct");
+					status[5] = "FAIL";
+					myMap.get(urls[count-1]).add(status[5]);
+					status[6] = "FAIL";
+					myMap.get(urls[count-1]).add(status[6]);
+				}
+
+
+				driver.get(urls[count-1]);
+				waitUntillElementVisible(driver, ".//a[@id='key-val']");
+				waitForTime(2000);
+				if(driver.findElements(By.xpath(".//a[@class='issue-link'][contains(text(),'Creation')]")).size()>0) {
+					System.out.println("8) PASS ---- TC Creation Task name is correct");
+					status[7] = "PASS";
+					myMap.get(urls[count-1]).add(status[7]);
+					scrollToElement(driver, driver.findElement(By.xpath(".//a[@class='issue-link'][contains(text(),'Creation')]")));
+					waitForTime(1000);
+					driver.findElement(By.xpath(".//a[@class='issue-link'][contains(text(),'Creation')]")).click();
+					waitUntillElementVisible(driver, ".//a[@id='key-val']");
+					waitForTime(2000);
+					if(driver.findElements(By.xpath(".//a[contains(@href,'pull-request')]")).size()>0) {
+						System.out.println("9) PASS ---- Pull request link is added in TC creation task");
+						status[8] = "PASS";
+						myMap.get(urls[count-1]).add(status[8]);
+					}
+					else 
+					{
+						System.out.println("9) FAIL ############################ Pull request link is not added in TC creation task");
+						status[8] = "FAIL";
+						myMap.get(urls[count-1]).add(status[8]);
+					}
+				}
+				else 
+				{
+					System.out.println("8) FAIL ---- TC Creation Task name is not correct or task is not created");
+					status[7] = "FAIL";
+					myMap.get(urls[count-1]).add(status[7]);
+					status[8] = "FAIL";
+					myMap.get(urls[count-1]).add(status[8]);
+				}
+
+
+				// Code to check Pull request status in story : 
+
+				driver.get(urls[count-1]);
+				waitUntillElementVisible(driver, ".//a[@id='key-val']");
+				waitForTime(2000);
+				// Getting all Regression Bugs :
+				if(driver.findElements(By.xpath(".//div[@id='wrap-labels']//a[@title='RegressionFailure']//span")).size()>0) {
+					if(driver.findElement(By.xpath(".//div[@id='wrap-labels']//a[@title='RegressionFailure']//span")).getText().equalsIgnoreCase("RegressionFailure")) {
+						regressionBugs.add(urls[count-1]);
+					}
+				}
+				if(driver.findElements(By.xpath(".//li[@id='pullrequest-status-panel']//a[@class='summary']")).size()>0) {
+					System.out.println("pull request is there in the story :: " + urls[count-1]);
+					String txt = driver.findElement(By.xpath(".//li[@id='pullrequest-status-panel']//div[@class='summary-content']//a[@class='summary']/following-sibling::span")).getText();
+					System.out.println("Text Against Pull Request in subtask is :: " + txt);
+					if (driver.findElement(By.xpath(".//li[@id='pullrequest-status-panel']//div[@class='summary-content']//a[@class='summary']/following-sibling::span")).getText().equalsIgnoreCase("MERGED")) {
+						status[9] = "PASS";
+						myMap.get(urls[count-1]).add(status[9]);
+						System.out.println("10) PASS ############################ Pull request raised by Developer is merged");
+					}
+					else {
+						status[9] = "FAIL";
+						myMap.get(urls[count-1]).add(status[9]);
+						System.out.println("10) FAIL ############################ Pull request raised by Developer is not merged");
+					}
+				}
+				else {
+					System.out.println("10) Pull request is not there in the story :: " + urls[count-1] );
+					status[9] = "No pull request is there in the story";
+					myMap.get(urls[count-1]).add(status[9]);
+				}
+
+				// Code to check pull request status in subtask
+
+				allDevTasks = driver.findElements(By.xpath(".//a[@class='issue-link'][contains(text(),'Dev')]"));
+				allDevTasks.addAll(driver.findElements(By.xpath(".//a[@class='issue-link'][contains(text(),'DEV')]")));
+				int numberOfDevTasks = allDevTasks.size();
+
+				System.out.println("numberOfDevTasks is :: " + numberOfDevTasks);
+
+				if(numberOfDevTasks>0) {
+					for(int num=1;num<=numberOfDevTasks;num++) {
+						if(num>1) {
+							driver.get(urls[count-1]);
+							waitUntillElementVisible(driver, ".//a[@id='key-val']");
+							waitForTime(2000);
+							allDevTasks = driver.findElements(By.xpath(".//a[@class='issue-link'][contains(text(),'Dev')]"));
+							allDevTasks.addAll(driver.findElements(By.xpath(".//a[@class='issue-link'][contains(text(),'DEV')]")));
+						}
+						scrollToElement(driver, allDevTasks.get(num-1));waitForTime(1000);
+						System.out.println("Name of Dev Task " + num + " is :: " + allDevTasks.get(num-1).getText());
+						allDevTasks.get(num-1).click();waitForTime(5000);
+						if(driver.findElements(By.xpath(".//li[@id='pullrequest-status-panel']//a[@class='summary']")).size()>0) {
+							String txt = driver.findElement(By.xpath(".//li[@id='pullrequest-status-panel']//div[@class='summary-content']//a[@class='summary']/following-sibling::span")).getText();
+							System.out.println("Text Against Pull Request in subtask is :: " + txt);
+							if (driver.findElement(By.xpath(".//li[@id='pullrequest-status-panel']//div[@class='summary-content']//a[@class='summary']/following-sibling::span")).getText().equalsIgnoreCase("MERGED")) {
+								status[10] = "PASS";
+								myMap.get(urls[count-1]).add(status[10]);
+								System.out.println("11) PASS ############################ Pull request raised by Developer is merged");
+							}
+							else {
+								status[10] = "FAIL";
+								myMap.get(urls[count-1]).add(status[10]);
+								System.out.println("11) FAIL ############################ Pull request(if raised) by Developer in subtask is not merged");
+								valueOfstatus = 1;
+							}
+						}
+						else {
+							status[10] = "PASS/NoPullRequestInSubTask";
+							myMap.get(urls[count-1]).add(status[10]);
+							System.out.println("11) No pull request is there in the sub-task");
+						}
+						driver.get(urls[count-1]); waitForTime(5000);
+					}
+					if(valueOfstatus==1) {
+						status[10] = "FAIL";
+						myMap.get(urls[count-1]).add(status[10]);
+						System.out.println("11) FAIL ############################ Pull request(if raised) by Developer in subtask is not merged");
+					}
+				}
+				else {
+					System.out.println("11) No dev task is there");
+					status[10] = "No Dev task is there in the story";
+					myMap.get(urls[count-1]).add(status[10]);
+				}
+			}
+			setMailBody();
+		}
+
+		// Sending mail 
+		System.out.println("**************************************Sending Email to " + username + "@netspend.com**********************************************");
+		sendMail();
+		waitForTime(5000);
+		System.out.println("Please Wait >>>>>>>>>> We are generating mail content in a min");
+		driver.quit();
+		waitForTime(50000);
+		System.out.println("**************************************Mail has been sent to " + username + "@netspend.com******************************************");
+
+	}
+
+
+	public static void waitForTime(int Time) {
+		try {
+			Thread.sleep(Time);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void scrollToElement(WebDriver driver, WebElement Element) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();", Element);
+	}
+
+	public static void waitUntillElementVisible(WebDriver driver, String xPathOfElement) {
+		WebDriverWait wait = new WebDriverWait(driver, 15);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xPathOfElement)));
+	}
+
+	public static void setMailBody() {
+
+		String feature[] = new String[11];
+		feature[0]="Test Collab Link attached in the story -> ";
+		feature[1]="Cloud usage Score added in the story -> ";
+		feature[2]="Cloud comment added in the story -> ";
+		feature[3]="Testing completion comment added in the story -> ";
+		feature[4]="All Dev/QA tasks created in this story are closed -> ";
+		feature[5]="TC Execution -  Task Name is correct -> ";
+		feature[6]="Log file is attached in TC Execution task -> ";
+		feature[7]="TC Creation - task name is correct ->";
+		feature[8]="QA's Pull request added in TC Creation story -> ";
+		feature[9]="Pull request raised by Developer in the story is merged -> ";
+		feature[10]= "Pull request raised by Developer in Dev task of this story is merged -> ";
+
+		sb.append("<table class=\"auto-index\">");
+		sb.append("<tbody>");
+		sb.append("  <tr>");
+		sb.append ("  <td style=\"text-align: center;font-weight: bold;background-color: #00FF00;\">StoryNo.  </td>");
+		sb.append ("  <td colspan=\"7\" style=\"text-align: center;font-weight: bold;background-color: #00FF00;\">StoryIDs  </td>");
+		sb.append ("  <td colspan=\"7\" style=\"text-align: center;font-weight: bold;background-color: #00FF00;\">Feature Number  </td>");
+		sb.append ("  <td colspan=\"7\" style=\"text-align: center;font-weight: bold;background-color: #00FF00;\">Features Required  </td>");
+		sb.append ("  <td colspan=\"7\" style=\"text-align: center;font-weight: bold;background-color: #00FF00;\">Status  </td>");
+
+		for(int count=1;count<=completeStoryList.size();count++) {
+			for(int featureCount=0;featureCount<feature.length;featureCount++) {
+				sb.append("  <tr>");
+				sb.append ("  <td style=\"text-align: center;font-weight: bold;background-color: #F0F8FF;\">" + count + " </td>");
+				sb.append ("  <td colspan=\"7\" style=\"text-align: center;font-weight: bold;background-color: #F0F8FF;\">" +urls[count-1]+ " : </td>");
+				sb.append ("  <td colspan=\"7\" style=\"text-align: center;font-weight: bold;background-color: #F0F8FF;\">" + count + " . " + (featureCount+1) + " </td>");
+				sb.append ("  <td colspan=\"7\" style=\"text-align: center;font-weight: bold;background-color: #FFF8DC;\">" + feature[featureCount]   + " </td>");
+				if(!(myMap.get(urls[count-1]).get(featureCount).equalsIgnoreCase("FAIL")))
+					sb.append ("  <td colspan=\"7\" style=\"text-align: center;font-weight: bold;background-color: #98FB98;\">" + myMap.get(urls[count-1]).get(featureCount)  + " </td>");
+				else 
+					sb.append ("  <td colspan=\"7\" style=\"text-align: center;font-weight: bold;background-color: #FF0000;\">" + myMap.get(urls[count-1]).get(featureCount)  + " </td>");
+				sb.append ("  </tr>");
+			}
+			sb.append("  <tr>");
+			sb.append ("  </tr>");
+			sb.append("  <tr>");
+			sb.append ("  </tr>");
+			sb.append("  <tr>");
+			sb.append ("  </tr>");
+		}
+
+	}
+
+	public static void addRegressionBugsInMail() {
+		if(regressionBugs.size()>0) {
+			sb.append ("  </tr>");
+			sb.append ("  </tr>");
+			sb.append("  <br><br>  <br> All Regression Bugs are : ");
+			for(int BugCount=0;BugCount<regressionBugs.size();BugCount++) {
+				sb.append("  <br><br> <br> RegressionBug " + (BugCount+1) + " is :: "  + regressionBugs.get(BugCount));
+			}
+		}
+		else {
+			sb.append ("  </tr>");
+		}
+	}
+
+	public static void sendMail() {
+		addRegressionBugsInMail();
+		sb.append ("  </tr>");
+		sb.append ("  </tr>");
+		if(!(team2==null))
+			sb.append("  <br><br> Thanks <br> Team " + team1 + " and " + team2);
+		else {
+			sb.append("  <br><br> Thanks <br> Team " + team1);
+		}
+		String s = sb.toString();
+		messageBody = s;
+
+		String host = "mail.hq.netspend.com";
+		String emailId = null;
+
+		//Get the session object
+		Properties properties = System.getProperties();
+		properties.setProperty("mail.smtp.host", host);
+		Session session=Session.getInstance(properties,null);   
+		MimeMessage message;
+
+		emailId =  username+"@netspend.com";
+		//compose the message
+		try {
+			message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("no-reply@QACompliance.com"));
+			if(!(team2==null))
+				message.setSubject("QA & Dev Compliance checks for : " + team1 + " and " + team2);
+			else message.setSubject("QA & Dev Compliance checks for : " + team1);
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailId));
+			message.addRecipient(Message.RecipientType.BCC, new InternetAddress("hgupta@netspend.com"));
+			message.setContent(messageBody, "text/html");
+			Transport.send(message);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
