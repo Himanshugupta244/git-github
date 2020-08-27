@@ -1,0 +1,100 @@
+1.Top 50 Records from a DataTable
+
+Dt2 = Dt1.Clone Dt2=Dt1.AsEnumerable().Take(50).CopyToDataTable()
+
+2. datatable = datatable.Asenumerable().Skip(N).CopyToDatatable()
+ where N is the first set of records to be neglected so that we will be able to get the BOTTOM N records.
+
+3. How to filter datatables in UiPath Studio
+Method 1- Filter Data Table activity in Studio
+Method 2- DataTable.Select()
+Method 3- DataTable extension method
+          DataTable.AsEnumerable()
+Method 4- Filter with LINQ
+
+4. the dispatcher uploads the queue items to the orchestrator and the performer gets the queue items from the orchestrator then processes the queue items.
+
+5. Generally, the bot process only the queue which has the status new. If the bot completes the queue its status will be set to completed. If the queue fails, then it sets the status as failed. If the bot is processing the queue, then the queue status will be set to in progress. 
+
+6.in_TransactionItem.SpecificContent(“ObjectName in queue”).ToString
+
+7. run the dispatcher so it can push queue items to the orchestrator. Then run the performer in both the machines, so the bots will perform only the queues with status new
+
+8. Various stages of RPA life cycles are: 1) Discovery phase, 2) solution design phase, 3) development phase, 4) user acceptance tests, 5) development and maintenance phase, and 6) execute bots.
+
+9. Various kinds of workflows in UiPath are: 
+•Sequences: The sequence is a small type of Project which are suitable for linear processes. It enables developers to switch from one activity to another easily.
+•State Machine: A machine using a specific number of states used for automation, it is called as the state machine. It will switch from one state to another.
+•Flowchart: It can be used for large or small projects that help in building complex business.
+
+10. Branching in UiPath is used for connecting activities using the branch in Flowchart.
+
+11. There are two types of Wildcards in UiPath: 
+•Asterisk (*): It replaces zero or more characters.
+•Question mark (?): It replaces a single character.
+
+12. a.Thin client automation - This refers to the automation where the process involves automating the tasks done on a browser. e.g. opening a browser, navigating to an URL, doing some activities on the website (like extracting data) etc.
+    b.Thick client automation - This refers to automating tasks done on a desktop application (for example, SAP GUI).
+    c.Surface automation - This refers to automation of tasks using image recognition, OCR (for example, automating applications hosted on Citrix environment).
+
+13. A generic variable is a special variable that can store any kind of data types like int, dates format, arrays, and string.
+
+14. Both Find Element and Element Exists are belongs to the same Main group Element and Sub Group Find.
+Find element Is to Find the Element by a selector, It can wait Specified UI Element gets active and even it can wait the Specified UI Element Appears physically too (But to an specified extent). Throws an error if the UiElement can not be find.
+Returns Ui Elemnet Type Variable.
+
+Element Exists Is to tell us whether the Specified Ui Element does exists or not, Waits for a specified time to check whether it exists or not, if YES or NO it goes to the next activity. Doesn’t throw any error.
+Returns Boolean Type Variable.
+
+15. Attended bot works on workstation similar to a human. It is triggered by the user through their events or actions. On the other hand, unattended robots work in neglected in virtual environments. It can automate any number of processes. 
+
+16. UI Explorer is a tool that is used to create a custom selector for a UI element. It is used only if the UiPath.UIAutomation.Activities package is installed in the Project.
+
+17. The Outline panel shows the project hierarchy, all nodes, as well as variables.
+
+18.Sections available in UiPath are: 1) Projects Panel, 2) Activity Panel, 3) Workflow Designer, and 4) Properties Panel. 
+
+19. The difference between while and do-while is that while loop check condition before the iterating loop. The do-while loop verifies the condition after the execution of the statement in the loop.
+
+20. Two types of robots that can be configured in Orchestrator are: 
+•Standard robot: It is a machine which is dedicated on a single standard machine.
+•Floating robot: It can use multiple machines like it can work on any standard or template.
+
+21. UiPath credential manager helps programmers to automate the process. It is used for creating, making, as well as deleting the credential using dedicated activities.
+
+22. Anchor base is a container that searches for a UI element using other UI elements. This tool can be used when any reliable selector is not present.
+
+23. Build datatable - you can create datatable with specific data .
+ for example : you can create table with column name - Age , I’d , name etc
+ Generate Datatable : you can convert string into datatype . In this case data is unstructured , you can give this data- the form of table by separating it with some separator value (string).
+
+24. there are multiple activities that you can find them in the Activities panel, under the UI Automation category which can be used to automate apps or web-apps. All of these activities have multiple properties in common:
+
+•ContinueOnError – Specifies if the automation should continue, even if the activity throws an error. This field only supports boolean values (True, False). The default value in this field is False. As a result, if this field is blank and an error is thrown, the execution of the project stops. If the value is set to True, the execution of the project continues regardless of any error.
+
+
+•DelayAfter – Adds a pause after the activity, in milliseconds.
+
+
+•DelayBefore – Adds a pause before the activity, in milliseconds.
+
+
+•TimeoutMS – Specifies the amount of time (in milliseconds) to wait for a specified element to be found before an error is thrown. The default value is 30000 milliseconds (30 seconds).
+
+
+•Target – Identifies the UI element the activity works with.
+
+
+•WaitForReady - Before performing the actions, wait for the target to become ready. The target is composed of multiple pieces, namely the container, selector and clipping region, to ensure that you correctly identify a UI element. 
+
+25. Is it possible to read the excel which have 2 or more columns with same name?
+Ans:- we can uncheck the ADD HEADERS property in READ RANGE ACTIVITY and get the output with a variable of type datatbale named dt
+–now this dt will have default column name as column1, column2,…
+and if we want to access any column we can do that only with column index and it starts from 0 for first column like this inside the FOR EACH ROW loop
+ row(0).ToString
+ row(1).ToString
+
+26. Libraries:
+
+27.Provisioning documents and release document
+
